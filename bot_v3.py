@@ -456,14 +456,12 @@ def main():
     from scheduler import Scheduler
     scheduler = Scheduler(db, ai, app)
 
-    async def run_all():
-        logger.info("Бот v3 + Scheduler запущены!")
-        await asyncio.gather(
-            app.run_polling(),
-            scheduler.run(),
-        )
+    async def post_init(application):
+        asyncio.create_task(scheduler.run())
 
-    asyncio.run(run_all())
+    app.post_init = post_init
+    logger.info("Бот v3 запущен!")
+    app.run_polling()
 
 if __name__ == '__main__':
     main()
