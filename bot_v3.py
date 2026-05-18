@@ -34,6 +34,7 @@ MAIN_KEYBOARD = ReplyKeyboardMarkup([
     [KeyboardButton("🔍 Поиск матчей"),   KeyboardButton("🗂 Архив лиг")],
     [KeyboardButton("🔬 Анализ матча"),   KeyboardButton("🧠 Статус AI")],
     [KeyboardButton("📡 Линия"),          KeyboardButton("📋 История")],
+    [KeyboardButton("📅 Ежедневная сводка")],
 ], resize_keyboard=True)
 
 LEAGUE_KB = ReplyKeyboardMarkup([
@@ -452,8 +453,17 @@ def main():
     )
     app.add_handler(conv)
     app.add_handler(CommandHandler("export", export_command))
-    logger.info("Бот v3 запущен!")
-    asyncio.run(app.run_polling())
+    from scheduler import Scheduler
+    scheduler = Scheduler(db, ai, app)
+
+    async def run_all():
+        logger.info("Бот v3 + Scheduler запущены!")
+        await asyncio.gather(
+            app.run_polling(),
+            scheduler.run(),
+        )
+
+    asyncio.run(run_all())
 
 if __name__ == '__main__':
     main()
