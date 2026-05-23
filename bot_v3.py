@@ -520,7 +520,7 @@ async def cancel(update, context):
 
 
 def main():
-    token = os.getenv("TELEGRAM_BOT_TOKEN", "8626920056:AAGrsygHfLE4ICxmcP3xWdcg4uSqpkOqB1o")
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
     app = Application.builder().token(token).build()
     conv = ConversationHandler(
         entry_points=[CommandHandler("start", start), MessageHandler(filters.TEXT & ~filters.COMMAND, main_menu)],
