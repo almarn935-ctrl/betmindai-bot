@@ -151,9 +151,9 @@ async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         stats = analyzer.get_statistics(uid)
         advice = BeginnerGuide.get_personal_advice(stats)
         await update.message.reply_text(
-            advice + "
+            advice + """
 
-📖 Выбери тему для изучения:",
+📖 Выбери тему для изучения:""",
             parse_mode='Markdown',
             reply_markup=BeginnerGuide.get_topics_keyboard()
         )
